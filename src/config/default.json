@@ -1,0 +1,21 @@
+{
+    "amqpSettings": {
+      "nodeEnv": "development",
+      "url": "amqp://localhost",
+      "queueName": "mpn-pmed.aleta-queue",
+      "serviceName": "pmed.aleta",
+      "timeout": 3000,
+      "consumerCount": 1
+    },
+    "loggerSettings": {
+      "nodeEnv": "development"
+    },
+    "appSettings": {
+      "nodeEnv": "development",
+      "mongoUrl": "mongodb://dbadmin:dbadmin@localhost/aletaspmed?authSource=admin",
+      "serviceRoutes": {
+        "aletaTexto": "/aletaTexto"
+      }
+    }
+  }
+  

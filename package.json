@@ -1,0 +1,39 @@
+{
+  "name": "",
+  "version": "0.0.0",
+  "description": "",
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
+  "files": [
+    "build/src"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [],
+  "scripts": {
+    "start": "tsc -p . && node ./build/src/index.js",
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
+    "docker:build": "rm -rf package-lock.json && docker build -t docker.totvs.io/totvsmpn/get-to-update .",
+    "docker:push": "docker push docker.totvs.io/totvsmpn/get-to-update",
+    "docker": "npm run docker:build && npm run docker:push"
+  },
+  "devDependencies": {
+    "@types/node": "^10.0.3",
+    "gts": "^1.1.0",
+    "mongoose": "^5.7.8",
+    "ts-node": "^8.4.1",
+    "typescript": "~3.5.0",
+    "gulp": "^4.0.2",
+    "@types/gulp": "^4.0.6"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.4",
+    "reflect-metadata": "^0.1.13"
+  }
+}
