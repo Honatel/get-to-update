@@ -3,9 +3,7 @@ get-to-update:
    container_name: get-to-update
    restart: always
    environment:
-     - MONGO_CONN=mongodb://mongo/aletaspmed
-     - MONGO_USER=admin
-     - MONGO_PWD=admin
+     - MONGODB_CONN=mongodb://admin:admin@mongo/aletaspmed
    external_links:
      - mongo
     
