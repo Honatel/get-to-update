@@ -1,10 +1,9 @@
 get-to-update:
-   image: docker.totvs.io/totvsmpn/get-to-update
-   container_name: get-to-update
-   restart: always
-   environment:
-     - MONGODB_CONN=mongodb://admin:admin@mongo/aletaspmed
-   external_links:
-     - mongo
-    
-
+  image: docker.totvs.io/totvsmpn/get-to-update
+  container_name: get-to-update
+  restart: always
+  environment:
+    - MONGODB_CONN=mongodb://admin:admin@mongo/aletaspmed
+    - FILTRO_TESTE=-100
+  external_links:
+    - mongo

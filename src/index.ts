@@ -6,7 +6,7 @@ var schema = new mongoose.Schema({ _id: 'Number', resumo1: 'string', resumo2: 's
 const aletaModel = mongoose.model('aleta_textos', schema);
 
 const app = (async () => {
-    const aletas = await aletaModel.find({});
+    const aletas = await aletaModel.find(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : {});
 
     aletas.map(async (aleta) => {
         aleta!.resumo1 = aleta.resumo1!
