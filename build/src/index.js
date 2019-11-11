@@ -6,14 +6,29 @@ dotenv.config();
 var schema = new mongoose.Schema({ _id: 'Number', resumo1: 'string', resumo2: 'string', resumo3: 'string', resumo4: 'string' });
 const aletaModel = mongoose.model('aleta_textos', schema);
 const app = (async () => {
-    const aletas = await aletaModel.find({});
-    aletas.map(async (aleta) => {
-        aleta.resumo1 = aleta.resumo1
-            .replace("</p><BR><BR><BR><BR><p>", "</p><p>")
-            .replace("</p><BR><BR>", "</p>")
-            .replace("<BR><BR><BR>", "<BR>");
-        await aletaModel.update({ _id: aleta._id }, { resumo1: `${aleta.resumo1}` });
-    });
+    //const qtd = await aletaModel.count(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : {remumo1: });
+    const qtd = 1090923;
+    let i = 0;
+    const limit = 50; //qtd / 10000
+    let lastId = 0;
+    while (i < qtd) {
+        console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO --- teste honatel 2`);
+        const aletas = await aletaModel
+            .find(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : { _id: { $gt: lastId } })
+            .limit(limit);
+        aletas.map(async (aleta) => {
+            aleta.resumo1 = aleta.resumo1
+                .replace(/<\/p+><BR+><BR+><BR+><BR+><p+>/g, '</p><p>');
+            //.replace(/<\/p+><BR+><BR+>/g, '</p>')
+            //.replace(/<BR+><BR+><BR+>/g, '<BR>')
+            //.replace(/<BR+><BR+><BR+><BR+>/g, '<BR>');
+            //console.log(`ID ATUALIZADO: ${aleta._id}`)
+            await aletaModel.update({ _id: aleta._id }, { resumo1: `${aleta.resumo1}` });
+            lastId = aleta._id;
+            i += 1;
+        });
+        console.log(`${i} % ATUALIZADO COM SUCESSO`);
+    }
     console.log('OBJETOS ATUALIZADOS COM SUCESSO');
 });
 const createNewRegisters = (() => {

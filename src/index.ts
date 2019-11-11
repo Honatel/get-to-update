@@ -13,12 +13,15 @@ const app = (async () => {
     let lastId = 0
 
     while (i < qtd) {
-        console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO --- teste honatel 2`)
+        console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO --- teste honatel 6`)
 
+        //console.log(`FILTRO TESTE ------  ${process.env.FILTRO_TESTE}`)
         const aletas = await aletaModel
-            .find(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : { _id: { $gt: lastId } })
+            .find({ _id: { $gt: lastId } })
             .limit(limit);
+            //.find(process.env.FILTRO_TESTE ? { _id: 6559976 } : { _id: { $gt: lastId } })
 
+        //console.log(`H----------------------${aletas!}--------------------H`)
         aletas.map(async (aleta) => {
             aleta!.resumo1 = aleta.resumo1!
                 .replace(/<\/p+><BR+><BR+><BR+><BR+><p+>/g, '</p><p>')
@@ -26,6 +29,9 @@ const app = (async () => {
                 .replace(/<BR+><BR+><BR+>/g, '<BR>')
                 .replace(/<BR+><BR+><BR+><BR+>/g, '<BR>');
 
+            // console.log(`------ID =${aleta!._id}---------------${aleta!.resumo1}--------------------`)
+            //console.log(`----------------------${i}--------------------`)
+            
             //console.log(`ID ATUALIZADO: ${aleta._id}`)
             await aletaModel.update({ _id: aleta._id }, { resumo1: `${aleta.resumo1}` });
 
@@ -52,8 +58,9 @@ mongoose.connect(process.env.MONGODB_CONN, { useNewUrlParser: true, useUnifiedTo
     .then(() => {
         console.log('Succesfully Connected to Mongo! - Version 1.3')
         console.log('🚀 APLICATIVO INICIADO...')
+        app()
     })
     .catch(err => console.log(`Error Connection Mongo:${err}`));
 
-app()
+//app()
 // createNewRegisters()
