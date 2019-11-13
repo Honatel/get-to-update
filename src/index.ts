@@ -1,5 +1,9 @@
 import * as mongoose from "mongoose";
 import * as dotenv from "dotenv";
+import * as bluebird from "bluebird";
+import * as rp from "request-promise";
+
+//12085681
 dotenv.config();
 
 var schema = new mongoose.Schema({ _id: 'Number', resumo1: 'string', resumo2: 'string', resumo3: 'string', resumo4: 'string' });
@@ -11,7 +15,7 @@ const app = (async () => {
     let i = 0
     const limit = 50//qtd / 10000
     let lastId = 0
-
+    const promises: rp.RequestPromise[] = [];
     while (i < qtd) {
         console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO`)
 
@@ -26,7 +30,8 @@ const app = (async () => {
 
                 // > db.getCollection('aleta_textos').find({_id: 23606060})
             //console.log(`ID ATUALIZADO: ${aleta._id}`)
-            await aletaModel.update({ _id: aleta._id }, { resumo1: `${novoResumo}` });
+            promises.push(rp(aleta));
+            //await aletaModel.update({ _id: aleta._id }, { resumo1: `${novoResumo}` });
             console.log(`--------id = ${aleta._id }`)
             lastId = aleta._id
             i += 1
