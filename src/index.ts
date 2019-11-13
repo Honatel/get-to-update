@@ -7,34 +7,27 @@ const aletaModel = mongoose.model('aleta_textos', schema);
 
 const app = (async () => {
     //const qtd = await aletaModel.count(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : {remumo1: });
-    const qtd = 1090923
+    const qtd = 6094566
     let i = 0
     const limit = 50//qtd / 10000
     let lastId = 0
 
     while (i < qtd) {
-        console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO --- teste honatel 6`)
+        console.log(`INICIANDO O PROCESSO DE ATUALIZAÇÃO`)
 
-        //console.log(`FILTRO TESTE ------  ${process.env.FILTRO_TESTE}`)
         const aletas = await aletaModel
             .find({ _id: { $gt: lastId } })
             .limit(limit);
-            //.find(process.env.FILTRO_TESTE ? { _id: 6559976 } : { _id: { $gt: lastId } })
+        //.find({ _id: 23608298 })
 
-        //console.log(`H----------------------${aletas!}--------------------H`)
         aletas.map(async (aleta) => {
-            aleta!.resumo1 = aleta.resumo1!
-                .replace(/<\/p+><BR+><BR+><BR+><BR+><p+>/g, '</p><p>')
-                .replace(/<\/p+><BR+><BR+>/g, '</p>')
-                .replace(/<BR+><BR+><BR+>/g, '<BR>')
-                .replace(/<BR+><BR+><BR+><BR+>/g, '<BR>');
+            const novoResumo = await aleta.resumo1!.toUpperCase()
+                    .replace(/<BR>+(?=<BR><BR>)/g, '')
 
-            // console.log(`------ID =${aleta!._id}---------------${aleta!.resumo1}--------------------`)
-            //console.log(`----------------------${i}--------------------`)
-            
+                // > db.getCollection('aleta_textos').find({_id: 23606060})
             //console.log(`ID ATUALIZADO: ${aleta._id}`)
-            await aletaModel.update({ _id: aleta._id }, { resumo1: `${aleta.resumo1}` });
-
+            await aletaModel.update({ _id: aleta._id }, { resumo1: `${novoResumo}` });
+            console.log(`--------id = ${aleta._id }`)
             lastId = aleta._id
             i += 1
         })
