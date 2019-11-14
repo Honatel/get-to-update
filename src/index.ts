@@ -11,15 +11,16 @@ const aletaModel = mongoose.model('aleta_textos', schema);
 
 const app = (async () => {
   //const qtd = await aletaModel.count(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : {remumo1: });
-  const qtd = 6195475
-  let i = 0
+  
+  const qtd = 6248508//6248508
+  let i = 2542300
   const limit = 50//qtd / 10000
-  let lastId = 4497250
+  let lastId = 17204015
 
   while (i < qtd) {
     const aletas = await aletaModel
       .find({ _id: { $gt: lastId } })
-      // .find({ _id: 4574809 })
+    //   .find({ _id: 23619651 })
       .limit(limit);
 
     const promise = aletas.map(async (aleta) => {
@@ -27,6 +28,7 @@ const app = (async () => {
 
         const novoResumo = aleta.resumo1!
           .replace(/&NBSP;/g, '&nbsp;')
+          .replace(/<br>/g, '<BR>')
           .replace(/<BR>+(?=<BR><BR>)/g, '')
           .replace(/&ATILDE;/g, '&Atilde;')
           .replace(/&APOS;/g, '&apos;')
@@ -127,19 +129,19 @@ const app = (async () => {
           .replace(/&YACUTE;/g, '&yacute;')
           .replace(/&THORN;/g, '&thorn;')
           .replace(/&YUML;/g, '&yuml;')
-          // .replace(/&LARR;/g, '&larr;')
-          // .replace(/&UARR;/g, '&uarr;')
-          // .replace(/&RARR;/g, '&rarr;')
-          // .replace(/&DARR;/g, '&darr;')
-          // .replace(/&HARR;/g, '&harr;')
-          // .replace(/&CRARR;/g, '&crarr;')
-          // .replace(/&LARR;/g, '&lArr;')
-          // .replace(/&UARR;/g, '&uArr;')
-          // .replace(/&RARR;/g, '&rArr;')
-          // .replace(/&DARR;/g, '&dArr;')
-          // .replace(/&HARR;/g, '&hArr;')
+          .replace(/&LARR;/g, '&larr;')
+          .replace(/&UARR;/g, '&uarr;')
+          .replace(/&RARR;/g, '&rarr;')
+          .replace(/&DARR;/g, '&darr;')
+          .replace(/&HARR;/g, '&harr;')
+          .replace(/&CRARR;/g, '&crarr;')
+          .replace(/&LARR;/g, '&lArr;')
+          .replace(/&UARR;/g, '&uArr;')
+          .replace(/&RARR;/g, '&rArr;')
+          .replace(/&DARR;/g, '&dArr;')
+          .replace(/&HARR;/g, '&hArr;');
 
-        await aletaModel.updateOne({ _id: aleta._id }, { resumo1: novoResumo, resumo2: aleta.resumo2, resumo3: aleta.resumo3, resumo4: aleta.resumo4 });
+        await aletaModel.replaceOne({ _id: aleta._id }, { resumo1: novoResumo, resumo2: aleta.resumo2, resumo3: aleta.resumo3, resumo4: aleta.resumo4 });
       }
       lastId = aleta._id
       i += 1
@@ -170,3 +172,4 @@ mongoose.connect(process.env.MONGODB_CONN, { useNewUrlParser: true, useUnifiedTo
 
   })
   .catch(err => console.log(`Error Connection Mongo:${err}`));
+
