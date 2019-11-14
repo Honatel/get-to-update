@@ -12,10 +12,10 @@ const aletaModel = mongoose.model('aleta_textos', schema);
 const app = (async () => {
   //const qtd = await aletaModel.count(process.env.FILTRO_TESTE ? { _id: process.env.FILTRO_TESTE } : {remumo1: });
   
-  const qtd = 6248508//6248508
-  let i = 2542300
+  const qtd = 6248508//6248508 // quantos foram processados = 6248550
+  let i = 5981250
   const limit = 50//qtd / 10000
-  let lastId = 17204015
+  let lastId = 25888103 // ultimo id :26296033     não foi ate o final esse é o ultimo codigo =26552281
 
   while (i < qtd) {
     const aletas = await aletaModel
